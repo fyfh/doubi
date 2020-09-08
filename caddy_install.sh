@@ -13,7 +13,8 @@ file="/usr/local/caddy/"
 caddy_file="/usr/local/caddy/caddy"
 caddy_conf_file="/usr/local/caddy/Caddyfile"
 Info_font_prefix="\033[32m" && Error_font_prefix="\033[31m" && Info_background_prefix="\033[42;37m" && Error_background_prefix="\033[41;37m" && Font_suffix="\033[0m"
-version=$(curl -fsSL https://github.com/caddyserver/caddy/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
+ver=$(curl -fsSL https://github.com/caddyserver/caddy/releases/latest | grep -Eo "tag_name.*[0-9]+\.[0-9]" | cut -d "=" -f 2 | sed -n "1p")
+version=${ver/v/}
 
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前非ROOT账号(或没有ROOT权限)，无法继续操作，请更换ROOT账号或使用 ${Green_background_prefix}sudo su${Font_color_suffix} 命令获取临时ROOT权限（执行后可能会提示输入当前账号的密码）。" && exit 1
